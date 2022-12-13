@@ -1,8 +1,8 @@
-import Course from './courses.js'
-// MAIN APP
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
 
-const App = (cour) => {
-  const courses = [
+const courses = [
     {
       name: 'Half Stack application development',
       id: 1,
@@ -47,12 +47,6 @@ const App = (cour) => {
     }
   ]
 
-
-  return (
-    <div>
-      <Course courses = {courses}/>
-    </div>
-  )
-}
-
-export default App
+ReactDOM.createRoot(document.getElementById('root')).render(
+<App courses = {courses} />
+)
