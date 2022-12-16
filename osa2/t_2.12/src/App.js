@@ -1,7 +1,27 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const RenderRes = ({results}) => {
+
+const RenderCountry = ({con}) => {
+  const languages = Object.values(con.languages)
+  
+  return(
+    <div>
+      <h1>{con.name.common}</h1>
+      <p>capital : {con.capital}</p>
+      <p>area: {con.area}</p>
+      <b>languages:</b>
+      {
+        languages.map((language, index) => (
+          <p key={index}>{language}</p>
+        ))
+      }
+      <img src={con.flags.png} />
+    </div>
+  )
+}
+
+const RenderRes = ({results, onCountrySelection}) => {
   if(results.length > 10){
     return(
     <p>too many matches, specify another filter</p>
@@ -9,40 +29,28 @@ const RenderRes = ({results}) => {
   }
 
   if(results.length === 1){
-    var con = results[0]
-  
-    const languages = Object.values(con.languages)
-    return(
-      <div>
-        <h1>{con.name.common}</h1>
-        <p>capital : {con.capital}</p>
-        <p>area: {con.area}</p>
-        <b>languages:</b>
-        {
-          languages.map((language, index) => (
-            <p key={index}>{language}</p>
-          ))
-        }
-        <img src={con.flags.png} />
-      </div>
-    )
+    var country = results[0]
+    return <RenderCountry con = {country}/>
   }
   if(results.length <= 10){
-  return(
+    return(
       <>
         {results.map(country => (
-          <p key={Math.random()}>{country.name.common}</p>
+          <p key={country}>{country.name.common}
+          <button onClick = {() => onCountrySelection(country)}>show</button>
+          </p>
         ))}
       </>
-    )}
+    )
   }
-
+}
 
 
 
 const App = () => {
   const [search, setSearch] = useState([])
   const [results, setResults] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
   useEffect(() => {
     axios
@@ -56,8 +64,13 @@ const App = () => {
   }, [search])
 
 
+  const handleCountrySelection = (country) => {
+    setSelectedCountry(country)
+  }
+
   const handleSearch = (event) => {
     setSearch(event.target.value)
+    setSelectedCountry(null)
   }
 
   return (
@@ -68,7 +81,11 @@ const App = () => {
           onChange={handleSearch}
         />
       </form>
-    <RenderRes results = {results}/>
+      { selectedCountry ? (
+        <RenderCountry con={selectedCountry} />
+      ) : (
+        <RenderRes results={results} onCountrySelection={handleCountrySelection} />
+      )}
     </div>
   )
 }
