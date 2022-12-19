@@ -74,42 +74,42 @@ test('testing that title and url are needed to add data', async () => {
 
 test('testing that deleting works', async () => {
 
-    const res = await api.get('/api/blogs')
-    const beforeDeletion = res.body.length
+  const res = await api.get('/api/blogs')
+  const beforeDeletion = res.body.length
 
-    const foundBlog = res.body.filter(x => x.author === 'serious wraiter')
-    await console.log(foundBlog)
+  const foundBlog = res.body.filter(x => x.author === 'serious wraiter')
+  await console.log(foundBlog)
 
-    await api
+  await api
     .delete(`/api/blogs/${foundBlog[0].id}`)
     .expect(203)
 
-    const res2 = await api.get('/api/blogs')
-    afterDeletion = res2.body.length
+  const res2 = await api.get('/api/blogs')
+  const afterDeletion = res2.body.length
 
-    expect(beforeDeletion!==afterDeletion).toBe(true)
-  })
+  expect(beforeDeletion!==afterDeletion).toBe(true)
+})
 
 test('testing put functionality', async () => {
-    const testInput = {
-        title: 'testing zero',
-        author: 'mcDylan',
-        url: 'google.com',
-        likes: 200
-      }
-    let res = await api.get('/api/blogs')
-    let foundBlog = res.body.filter(x => x.author === 'serious wraiter')
+  const testInput = {
+    title: 'testing zero',
+    author: 'mcDylan',
+    url: 'google.com',
+    likes: 200
+  }
+  let res = await api.get('/api/blogs')
+  let foundBlog = res.body.filter(x => x.author === 'serious wraiter')
 
-    await api
+  await api
     .put(`/api/blogs/${foundBlog[0].id}`)
     .set('Content-Type', 'application/json')
     .send(testInput)
     .expect(200)
 
-    res = await api.get('/api/blogs')
-    foundBlog = res.body.filter(x => x.author === 'serious wraiter')
+  res = await api.get('/api/blogs')
+  foundBlog = res.body.filter(x => x.author === 'serious wraiter')
 
-    expect(foundBlog.length).toBe(0)
+  expect(foundBlog.length).toBe(0)
 
 })
   

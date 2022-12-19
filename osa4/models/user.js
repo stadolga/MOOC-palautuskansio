@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
       ref: 'Blog'
     }
   ],
-});
+})
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
