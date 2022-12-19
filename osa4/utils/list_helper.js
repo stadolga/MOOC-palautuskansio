@@ -34,17 +34,14 @@ const mostBlogs = (blogs) => {
 }
 
 const mostLikes = (blogs) => {
-  // Group the blogs by author using the _.groupBy function
   const groupedBlogs = _.groupBy(blogs, 'author')
 
-  // Use the _.maxBy function to get the author with the most likes
   const authorWithMostLikes = _.maxBy(
     _.keys(groupedBlogs),
     (author) =>
       _.sumBy(groupedBlogs[author], (blog) => blog.likes)
   )
   
-  // Return the author and the total number of likes
   return {
     author: authorWithMostLikes,
     likes: _.sumBy(groupedBlogs[authorWithMostLikes], (blog) => blog.likes),
