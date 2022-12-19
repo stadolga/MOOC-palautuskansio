@@ -1,36 +1,44 @@
 const blogRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 
-blogRouter.get('/', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
+blogRouter.get('/', async (request, response) => {
+  const res = await Blog
+  .find({})
+  .populate('user', { username: 1, name: 1 })
+  response.json(res)
 })
   
-blogRouter.post('/', (request, response) => {
-  let blog = {}
+blogRouter.post('/', async (request, response) => {
+  console.log(request.token, "!!!")
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+
   if(!request.body.hasOwnProperty('title') || !request.body.hasOwnProperty('url')){
     return response.status(400).json({answer: "url and title required"})
   }
 
-  if (!request.body.hasOwnProperty('likes')) {
-    blog = new Blog({
-      title: request.body.title,
-      author: request.body.author,
-      url: request.body.url,
-      likes: 0
-    })
+  let blog = new Blog({
+    title: request.body.title,
+    author: request.body.author,
+    url: request.body.url,
+    likes: 0,
+    user: user._id
+  })
+
+  if (request.body.hasOwnProperty('likes')) {
+    blog.likes = request.body.likes
   }
-  else{blog = new Blog(request.body)}
   
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
+  const res = await blog.save();
+  user.blogs = user.blogs.concat(res._id)
+  await user.save()
+  response.status(201).json(res)
 })
 
 blogRouter.delete('/:id', async (request, response) => {
