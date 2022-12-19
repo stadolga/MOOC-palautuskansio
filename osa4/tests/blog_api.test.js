@@ -71,6 +71,47 @@ test('testing that title and url are needed to add data', async () => {
     .send(testInput)
     .expect(400)
 })
+
+test('testing that deleting works', async () => {
+
+    const res = await api.get('/api/blogs')
+    const beforeDeletion = res.body.length
+
+    const foundBlog = res.body.filter(x => x.author === 'serious wraiter')
+    await console.log(foundBlog)
+
+    await api
+    .delete(`/api/blogs/${foundBlog[0].id}`)
+    .expect(203)
+
+    const res2 = await api.get('/api/blogs')
+    afterDeletion = res2.body.length
+
+    expect(beforeDeletion!==afterDeletion).toBe(true)
+  })
+
+test('testing put functionality', async () => {
+    const testInput = {
+        title: 'testing zero',
+        author: 'mcDylan',
+        url: 'google.com',
+        likes: 200
+      }
+    let res = await api.get('/api/blogs')
+    let foundBlog = res.body.filter(x => x.author === 'serious wraiter')
+
+    await api
+    .put(`/api/blogs/${foundBlog[0].id}`)
+    .set('Content-Type', 'application/json')
+    .send(testInput)
+    .expect(200)
+
+    res = await api.get('/api/blogs')
+    foundBlog = res.body.filter(x => x.author === 'serious wraiter')
+
+    expect(foundBlog.length).toBe(0)
+
+})
   
 
 afterAll(() => {
