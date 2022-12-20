@@ -10,12 +10,12 @@ const Notification = ({ message }) => {
       </div>
     )
   }
-  
+
   return (
     <div className="error">
       {message}
     </div>
   )
 }
-  
+
 export default Notification

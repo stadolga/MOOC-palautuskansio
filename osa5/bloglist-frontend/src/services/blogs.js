@@ -5,6 +5,7 @@ let token = null
 
 const getAll = () => {
   const request = axios.get(baseUrl)
+  console.log('ea', request)
   return request.then(response => response.data)
 }
 
@@ -21,5 +22,20 @@ const create = async newObject => {
   return response.data
 }
 
+const put = async (newObject, id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  console.log(newObject,id)
+  await axios.put(`${baseUrl}/${id}`, newObject, config)
+}
 
-export default { getAll, setToken, create}
+const deleteBlog = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  await axios.delete(`${baseUrl}/${id}`, config)
+}
+
+
+export default { getAll, setToken, create, put, deleteBlog }
