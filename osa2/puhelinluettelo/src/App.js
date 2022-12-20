@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { render } from 'react-dom'
 import { AddPerson, Filter, DisplayPersons } from './components'
 import noteService from './services'
 
@@ -7,12 +6,12 @@ const Notification = ({ message }) => {
   if (message === null) {
     return null
   }
-  if(message.includes('has already been removed from the server')){
-    return(
+  if (message.includes('error') || message.includes('failed')) {
+    return (
       <div className="deleteError">
-      {message}
-    </div>
-    )
+        {message}
+      </div>
+    );
   }
   return (
     <div className="error">
@@ -61,6 +60,7 @@ const App = () => {
     noteService
     .update(id, newObject)
     .then(returnedNote => {
+      console.log(returnedNote, "!") //returned note is wrong
       setPersons(persons.map(person => person.id !== id ? person : returnedNote))
       setMessage(
         `updated ${name}'s phone number`
@@ -70,15 +70,15 @@ const App = () => {
       }, 3000)
     })
     .catch(error => {
+      console.log(error)
       setMessage(
-        `Information of ${newName} has already been removed from the server`
+        `error: Information of ${newName} has already been removed from the server`
       )
       setTimeout(() => {
         setMessage(null)
       }, 3000)
       setPersons(persons.filter(n => n.id !== id))
     })
-    
 }
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -123,7 +123,15 @@ const App = () => {
         setMessage(null)
       }, 3000)
     })
-
+    .catch(error => {
+      console.log(error.response.data.error, "!")
+      setMessage(
+        error.response.data.error
+      )
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
+    })
   }
 
   const personsToShow = search.length === 0
