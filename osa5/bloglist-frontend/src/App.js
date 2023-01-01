@@ -113,6 +113,7 @@ const App = () => {
                 blog={blog}
                 removeBlog={removeBlog}
                 currentUserUsername={user.username}
+                setBlogs = {setBlogs}
               />
             )}
           </ul>

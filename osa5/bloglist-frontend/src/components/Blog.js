@@ -1,8 +1,29 @@
-import { useState } from 'react'
+import { useState} from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, removeBlog, currentUserUsername }) => {
-  console.log(currentUserUsername,'!!!',blog.user.username)
+const Blog = ({ blog, removeBlog, currentUserUsername, setBlogs}) => {
+  const useLike = () => {
+    console.log("clicked")
+    const userObject = {
+      user: blog.user.id,
+      likes: likes+1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
+    }
+    setLikes(likes+1)
+    blogService.put(userObject,blog.id)
+    .then(() => {
+      // get updated list of blogs
+      blogService.getAll().then(blogs => {
+        // sort the list of blogs by likes
+        const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+        // update the state with the sorted list of blogs
+        setBlogs(sortedBlogs)
+      })
+    })
+  }
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -20,34 +41,22 @@ const Blog = ({ blog, removeBlog, currentUserUsername }) => {
     setVisible(!visible)
   }
 
-  const useLike = () => {
-    console.log('here')
-    const userObject = {
-      user: blog.user.id,
-      likes: likes+1,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url
-    }
-    setLikes(likes+1)
-    blogService.put(userObject,blog.id)
-  }
-
   return(
-    <div style = {blogStyle}>
+    <div style = {blogStyle} class="blog">
       <div style={{ hideWhenVisible }}>
-        {blog.title} {blog.author}
+        <p>{blog.title} {blog.author}</p>
         <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         {blog.url}<br/>
-    likes: {likes}<button onClick = {useLike}>like</button><br/>
+        likes: {likes}<button class="like" onClick = {useLike}>like</button><br/>
         {blog.user.name}<br/>
         {blog.user.username === currentUserUsername ? (
           <button onClick={() => removeBlog(blog)}>remove</button>
         ) : null}
       </div>
     </div>
-  )}
+  )
+}
 
 export default Blog

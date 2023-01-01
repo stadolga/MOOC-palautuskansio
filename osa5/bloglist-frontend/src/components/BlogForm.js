@@ -37,8 +37,8 @@ const BlogForm = ({ createBlog }) => {
   }
 
 
-  return(
-    <form onSubmit={addBlog}>
+    return(
+    <form data-testid="form" onSubmit={addBlog}>
       <div>
         title:
         <input
@@ -46,6 +46,8 @@ const BlogForm = ({ createBlog }) => {
           name='title'
           value={newTitle} //this needs to change too, more forms etc
           onChange={handleTitleChange}
+          data-testid="title-input"
+          id ="title"
         />
       </div>
       <div>
@@ -55,6 +57,8 @@ const BlogForm = ({ createBlog }) => {
           value={newAuthor}
           name="author"
           onChange={handleAuthorChange}
+          data-testid="author-input"
+          id ="author"
         />
       </div>
       <div>
@@ -64,10 +68,13 @@ const BlogForm = ({ createBlog }) => {
           value={newUrl}
           name="Username"
           onChange={handleUrlChange}
+          data-testid="url-input"
+          id ="url"
         />
       </div>
-      <button type="submit">create</button>
+      <button type="submit" id="submit-blog">create</button>
     </form>
   )}
+
 
 export default BlogForm
