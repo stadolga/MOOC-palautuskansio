@@ -13,17 +13,24 @@ const notificationSlice = createSlice({
     }
   });
 
+let timeoutId = null;
+let notificationDisplayed = false;
+
 export const {showNotification, deleteNotification} = notificationSlice.actions
 
 export const setNotification = (message, time) => {
-  console.log(time, "!!!")
   return dispatch => {
-    dispatch(showNotification(message))
-    console.log("here")
-    const timeoutId = setTimeout(() => {
+    if (notificationDisplayed) {
+      clearTimeout(timeoutId);
+    }
+
+    dispatch(showNotification(message));
+    notificationDisplayed = true;
+
+    timeoutId = setTimeout(() => {
       dispatch(deleteNotification());
+      notificationDisplayed = false;
     }, time);
-    return () => clearTimeout(timeoutId);
   }
 }
 
