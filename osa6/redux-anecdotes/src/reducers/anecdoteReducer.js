@@ -1,42 +1,49 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
-
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
+import anecdoteService from '../services/anecdoteService';
 
 const anecdotesSlice = createSlice({
   name: 'anecdotes',
-  initialState: anecdotesAtStart.map(asObject),
+  initialState: [],
   reducers: {
     vote: (state, action) => {
-      const id = action.payload
+      var id = action.payload.id
       const anecdote = state.find(anecdote => anecdote.id === id);
-      console.log(id)
       if (anecdote) {
         anecdote.votes += 1;
       }
     },
     newAnecdote: (state, action) => {
       console.log('Vote action received:', action, );
-      state.push(asObject(action.payload));
+      state.push(action.payload);
+      return state.sort((a,b) => b.votes-a.votes)
+    },
+    setAll: (state, action) => {
+      console.log("called")
+      console.log(action,state)
+      return action.payload
     }
   }
 });
 
-export const { vote, newAnecdote } = anecdotesSlice.actions;
+export const { vote, newAnecdote, setAll } = anecdotesSlice.actions;
 export default anecdotesSlice.reducer;
+
+export const initializeNotes = () => {
+  return async dispatch => {
+    const notes = await anecdoteService.getAll()
+    dispatch(setAll(notes))
+  }
+}
+
+export const createAnecdote = content => {
+  return async dispatch => {
+    const newNote = await anecdoteService.createNew(content)
+    dispatch(newAnecdote(newNote))
+  }
+}
+export const addVote = id => {
+  return async dispatch => {
+    const newVote = await anecdoteService.newVote(id)
+    dispatch(vote(newVote))
+  }
+}
