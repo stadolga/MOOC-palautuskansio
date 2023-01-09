@@ -1,16 +1,20 @@
 import {useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import blogService from "./services/blogs";
+import blogService from "./services/blogService";
+import userService from './services/userService'
 
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
+import UserTable from "./components/UserInfo";
 
 import {initializeBlogs} from './reducers/blogReducer'
 import {setUser} from './reducers/loginReducer'
+import { initializeUsers } from "./reducers/userReducer";
+
 import "./index.css";
 
 
@@ -19,10 +23,15 @@ const App = () => {
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.login.user)
 
-
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [blogs.length])
+
+  useEffect(() => {
+    dispatch(initializeUsers())
+  }, [])
+  const userList = useSelector(state => state.users)
+  
 
 
   useEffect(() => {
@@ -52,9 +61,12 @@ const App = () => {
       ) : (
         <div>
           {user.name} logged in
-          <button onClick={handleLogOut} type="submit">
-            logout
-          </button>
+          <div>
+            <button onClick={handleLogOut} type="submit">
+              logout
+            </button>
+          </div><br/>
+          <UserTable users = {userList}/>
           <Togglable buttonLabel="create a new blog">
             <BlogForm />
           </Togglable>
