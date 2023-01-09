@@ -1,27 +1,26 @@
 import { useState } from "react";
-import blogService from "../services/blogs";
+import { useDispatch } from "react-redux";
+import { updateBlogThunk, removeBlogThunk} from "../reducers/blogReducer";
 
-const Blog = ({ blog, removeBlog, currentUserUsername, setBlogs }) => {
+const Blog = ({blog, currentUserUsername}) => {
+  const dispatch = useDispatch() 
+
+  const removeBlog = (blog) => {
+    const id = blog.id;
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      dispatch(removeBlogThunk(id))
+    }
+  };
 
   const useLike = () => {
     const userObject = {
       user: blog.user.id,
-      likes: likes + 1,
+      likes: blog.likes + 1,
       author: blog.author,
       title: blog.title,
       url: blog.url,
     };
-
-    setLikes(likes + 1);
-    blogService.put(userObject, blog.id).then(() => {
-      // get updated list of blogs
-      blogService.getAll().then((blogs) => {
-        // sort the list of blogs by likes
-        const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
-        // update the state with the sorted list of blogs
-        setBlogs(sortedBlogs);
-      });
-    });
+    dispatch(updateBlogThunk(userObject,blog.id))
   };
 
   const blogStyle = {
@@ -33,7 +32,6 @@ const Blog = ({ blog, removeBlog, currentUserUsername, setBlogs }) => {
   };
 
   const [visible, setVisible] = useState(false);
-  const [likes, setLikes] = useState(blog.likes);
   const hideWhenVisible = { display: visible ? "none" : "" };
   const showWhenVisible = { display: visible ? "" : "none" };
 
@@ -52,7 +50,7 @@ const Blog = ({ blog, removeBlog, currentUserUsername, setBlogs }) => {
       <div style={showWhenVisible} className="togglableContent">
         {blog.url}
         <br />
-        likes: {likes}
+        likes: {blog.likes}
         <button class="like" onClick={useLike}>
           like
         </button>

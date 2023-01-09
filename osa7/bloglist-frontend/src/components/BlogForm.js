@@ -1,49 +1,44 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import {newBlog} from '../reducers/blogReducer'
+import { setNotification } from "../reducers/notificationReducer";
+import {setNewAuthor, setNewTitle, setNewUrl} from "../reducers/blogFormReducer"
 
-const BlogForm = ({ createBlog }) => {
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newUrl, setNewUrl] = useState("");
-  const [newTitle, setNewTitle] = useState("");
 
-  BlogForm.propTypes = {
-    createBlog: PropTypes.func.isRequired,
-  };
+const BlogForm = () => {
 
-  const handleAuthorChange = (event) => {
-    setNewAuthor(event.target.value);
-  };
+  const dispatch = useDispatch()
 
-  const handleTitleChange = (event) => {
-    setNewTitle(event.target.value);
-  };
+  const newTitle = useSelector(state => state.blogForm.newTitle);
+  const newAuthor = useSelector(state => state.blogForm.newAuthor);
+  const newUrl = useSelector(state => state.blogForm.newUrl);
 
-  const handleUrlChange = (event) => {
-    setNewUrl(event.target.value);
-  };
+  const handleAuthorChange = (event) => dispatch(setNewAuthor(event.target.value))
+  const handleTitleChange = (event) =>dispatch(setNewTitle(event.target.value))
+  const handleUrlChange = (event) => dispatch(setNewUrl(event.target.value))
 
-  const addBlog = (event) => {
+  const addBlogForm = (event) => {
     event.preventDefault();
     const blogObject = {
       author: newAuthor,
       title: newTitle,
       url: newUrl,
     };
-    console.log(blogObject);
-    createBlog(blogObject);
-    setNewAuthor("");
-    setNewTitle("");
-    setNewUrl("");
+    dispatch(newBlog(blogObject)); //calling the thunk
+    dispatch(setNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`,5000))
+
+    dispatch(setNewAuthor(""));
+    dispatch(setNewTitle(""));
+    dispatch(setNewUrl(""));
   };
 
   return (
-    <form data-testid="form" onSubmit={addBlog}>
+    <form data-testid="form" onSubmit={addBlogForm}>
       <div>
         title:
         <input
           type="text"
           name="title"
-          value={newTitle} //this needs to change too, more forms etc
+          value={newTitle}
           onChange={handleTitleChange}
           data-testid="title-input"
           id="title"

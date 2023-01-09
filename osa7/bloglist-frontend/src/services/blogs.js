@@ -5,7 +5,6 @@ let token = null;
 
 const getAll = () => {
   const request = axios.get(baseUrl);
-  console.log("ea", request);
   return request.then((response) => response.data);
 };
 
@@ -26,8 +25,7 @@ const put = async (newObject, id) => {
   const config = {
     headers: { Authorization: token },
   };
-  console.log(newObject, id);
-  await axios.put(`${baseUrl}/${id}`, newObject, config);
+  return await axios.put(`${baseUrl}/${id}`, newObject, config);
 };
 
 const deleteBlog = async (id) => {
