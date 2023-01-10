@@ -1,8 +1,11 @@
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { updateBlogThunk, removeBlogThunk, addCommentsThunk} from "../reducers/blogReducer";
+import { useNavigate } from "react-router-dom";
+import { Button, ListGroup } from "react-bootstrap";
 
 const Blog = ({ blog,currentUserUsername}) => {
+    const navigate = useNavigate()
     const[comment,setComment] = useState("")
     const dispatch = useDispatch()
 
@@ -21,6 +24,8 @@ const Blog = ({ blog,currentUserUsername}) => {
         if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
           dispatch(removeBlogThunk(id))
         }
+        navigate('/')
+        //lisää viesti että blogi on poistettu
       };
     
       const useLike = () => {
@@ -41,33 +46,35 @@ const Blog = ({ blog,currentUserUsername}) => {
       }
       
       return (
-        <div>
-        <h1>{blog.title} {blog.author}</h1>
-        <div>
-        <a href={`https://${blog.url}`}>{blog.url}</a>
-        <br/>
-        likes: {blog.likes}
-        <button className="like" type="submit" onClick={useLike}>
-        like
-        </button>
-        <br/>
-        added by {blog.user.name}
-        {blog.user.username === currentUserUsername ? (
-        <button onClick={() => removeBlog(blog)}>remove</button>
-        ) : null}
-        </div>
-        <h2>comments</h2>
-        <form onSubmit={handleSubmit}>
-            <input name="comment" type="text" value={comment} onChange={handleChange}></input>
-            <button type="submit">submit!</button>
-        </form>
-        {blog.comment.length === 0 ? <p>No comments yet.</p> : 
-            <ul>
-                {blog.comment.map((comm) => 
-                <li key={comm._id}>{comm.comment}</li>
-                )}
-            </ul>
-        }
+        <div className="secondaryElems">
+            <h1>{blog.title} by {blog.author}</h1>
+            <div>
+                <h3><a href={`https://${blog.url}`}>{blog.url}</a></h3>
+                <br/>
+                <h5>likes: {blog.likes}</h5>
+                <Button type="submit" onClick={useLike}>
+                like
+                </Button>
+                <br/>
+                <h5>added by {blog.user.name}</h5>
+                {blog.user.username === currentUserUsername ? (
+                <Button onClick={() => removeBlog(blog)}>remove</Button>
+                ) : null}
+            </div>
+            <h2>submit comment:</h2>
+            <form onSubmit={handleSubmit}>
+                <input name="comment" type="text" value={comment} onChange={handleChange}></input>
+                <Button type="submit">submit!</Button>
+            </form><br/>
+            <div className ="commentsScrollable">
+            {blog.comment.length === 0 ? <p>No comments yet.</p> : 
+                <ListGroup>
+                    {blog.comment.map((comm) => 
+                    <div className="comments"><ListGroup.Item key={comm._id}>{comm.comment}</ListGroup.Item></div>
+                    )}
+                </ListGroup>
+            }
+            </div>
         </div>
         );
         };

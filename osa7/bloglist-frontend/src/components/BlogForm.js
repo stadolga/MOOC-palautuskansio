@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {newBlog} from '../reducers/blogReducer'
 import { setNotification } from "../reducers/notificationReducer";
 import {setNewAuthor, setNewTitle, setNewUrl} from "../reducers/blogFormReducer"
+import { Button } from "react-bootstrap";
 
 
 const BlogForm = () => {
@@ -66,9 +67,9 @@ const BlogForm = () => {
           id="url"
         />
       </div>
-      <button type="submit" id="submit-blog">
+      <Button type="submit" id="submit-blog">
         create
-      </button>
+      </Button>
     </form>
   );
 };

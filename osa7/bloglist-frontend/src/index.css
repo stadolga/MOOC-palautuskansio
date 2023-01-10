@@ -17,3 +17,70 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.comments{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.logout{
+  display: flex;
+  justify-content: right;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgray;
+}
+
+.left{
+  text-align: right;
+}
+
+.blogs{
+  background-color: lightgray;
+}
+
+.commentsScrollable {
+  height: 200px;
+  display: flex; 
+  background-color: lightgray;
+  border: 1px solid black;
+  overflow-y: scroll;
+}
+
+Button{
+  padding: 20px
+}
+
+.blogsScrollable {
+  height: 400px;
+  display: flex; 
+  background-color: lightgray;
+  border: 1px solid black;
+  overflow-y: scroll;
+}
+
+body, html {
+  height: 50%;
+}
+
+.main{
+  border: 5px solid;
+}
+
+.secondaryElems{
+  padding: 50px;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+}

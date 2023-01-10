@@ -1,24 +1,25 @@
 import { useParams } from "react-router-dom";
+import { ListGroup } from "react-bootstrap";
 
 const User = ({ user }) => {
   return (
-    <div>
+    <div className ="secondaryElems">
       {user ? (
-        <>
+        <div className="blog">
           <h1>{user.name}</h1>
           <h2>Added blogs</h2>
           {user.blogs.length ? (
-            <ul>
+            <ListGroup className="blogsScrollable">
               {user.blogs.map((blog) => (
-                <li key = {blog.id}>{blog.title}</li>
+                <ListGroup.Item key = {blog.id}>{blog.title}</ListGroup.Item>
               ))}
-            </ul>
+            </ListGroup>
           ) : (
             <div>
               <h3>No blogs yet</h3>
             </div>
           )}
-        </>
+        </div>
       ) : (
         <h1>user not found</h1>
       )}
