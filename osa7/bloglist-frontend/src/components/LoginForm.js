@@ -1,18 +1,19 @@
-import { setNotification } from "../reducers/notificationReducer";
-import { setPassword,setUsername, setUser } from "../reducers/loginReducer";
-import loginService from "../services/loginService";
-import blogService from "../services/blogService";
-import { useDispatch, useSelector } from "react-redux";
-import { Form, FormGroup, FormControl, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Form, FormGroup, FormControl, Button,
+} from 'react-bootstrap';
+import { setNotification } from '../reducers/notificationReducer';
+import { setPassword, setUsername, setUser } from '../reducers/loginReducer';
+import loginService from '../services/loginService';
+import blogService from '../services/blogService';
 
+function LoginForm() {
+  const dispatch = useDispatch();
+  const handlePasswordChange = (event) => dispatch(setPassword(event.target.value));
+  const handleUsernameChange = (event) => dispatch(setUsername(event.target.value));
 
-const LoginForm = () => {
-  const dispatch = useDispatch()
-  const handlePasswordChange = (event) => dispatch(setPassword(event.target.value))
-  const handleUsernameChange = (event) =>dispatch(setUsername(event.target.value))
-
-  const username = useSelector(state => state.login.username)
-  const password = useSelector(state => state.login.password)
+  const username = useSelector((state) => state.login.username);
+  const password = useSelector((state) => state.login.password);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -22,16 +23,16 @@ const LoginForm = () => {
         password,
       });
 
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
       blogService.setToken(user.token);
 
       setUser(user);
-      setUsername("")
-      setPassword("")
+      setUsername('');
+      setPassword('');
 
-      if(user) window.location.reload();
+      if (user) window.location.reload();
     } catch (exception) {
-      dispatch(setNotification("error: wrong username or password", 5000));
+      dispatch(setNotification('error: wrong username or password', 5000));
     }
   };
 
@@ -63,7 +64,6 @@ const LoginForm = () => {
       </Button>
     </Form>
   );
-};
-
+}
 
 export default LoginForm;

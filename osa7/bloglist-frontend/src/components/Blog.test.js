@@ -1,21 +1,20 @@
-import React from "react";
-import { render, screen, act } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import Blog from "./Blog";
-import BlogForm from "./BlogForm";
-import userEvent from "@testing-library/user-event";
+import React from 'react';
+import { render, screen, act } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
+import Blog from './Blog';
 
 let container;
 beforeEach(() => {
   const createBlog = jest.fn();
   const blogObject = {
-    author: "Mikko",
-    title: "Double",
-    url: "goog.fi",
+    author: 'Mikko',
+    title: 'Double',
+    url: 'goog.fi',
     likes: 0,
     user: {
-      name: "markus",
-      username: "minna",
+      name: 'markus',
+      username: 'minna',
     },
   };
   container = render(
@@ -23,22 +22,22 @@ beforeEach(() => {
       blog={blogObject}
       removeBlog={createBlog}
       currentUserUsername="make"
-    />
+    />,
   ).container;
 });
 
-test("at start the children are not displayed", () => {
-  const element = screen.getByText("Double", { exact: false });
+test('at start the children are not displayed', () => {
+  const element = screen.getByText('Double', { exact: false });
   expect(element).toBeDefined();
 });
 
-test("testing all data is shown after clicking the button", async () => {
+test('testing all data is shown after clicking the button', async () => {
   const user = userEvent.setup();
-  const button = screen.getByText("view");
+  const button = screen.getByText('view');
   await user.click(button);
 
-  const div = container.querySelector(".togglableContent");
-  expect(div).not.toHaveStyle("display: none");
+  const div = container.querySelector('.togglableContent');
+  expect(div).not.toHaveStyle('display: none');
 });
 
 // test('creating a new blog calls the createBlog prop with the correct data', async () => {

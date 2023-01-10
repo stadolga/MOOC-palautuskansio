@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Button } from "react-bootstrap";
+import { useState } from 'react';
+import { Button } from 'react-bootstrap';
 
-const Togglable = (props) => {
+function Togglable(props) {
   const [visible, setVisible] = useState(false);
 
-  const hideWhenVisible = { display: visible ? "none" : "" };
-  const showWhenVisible = { display: visible ? "" : "none" };
+  const hideWhenVisible = { display: visible ? 'none' : '' };
+  const showWhenVisible = { display: visible ? '' : 'none' };
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -15,7 +15,7 @@ const Togglable = (props) => {
     <>
       <div style={hideWhenVisible}>
         <Button id="view" onClick={toggleVisibility}>
-        create a new blog
+          create a new blog
         </Button>
       </div>
       <div style={showWhenVisible}>
@@ -24,6 +24,6 @@ const Togglable = (props) => {
       </div>
     </>
   );
-};
+}
 
 export default Togglable;

@@ -16,9 +16,9 @@ const blogFormSlice = createSlice({
     },
     setNewUrl: (state, action) => {
       state.newUrl = action.payload;
-    }
+    },
   },
 });
 
-export const { setNewAuthor, setNewTitle, setNewUrl} = blogFormSlice.actions;
+export const { setNewAuthor, setNewTitle, setNewUrl } = blogFormSlice.actions;
 export default blogFormSlice.reducer;

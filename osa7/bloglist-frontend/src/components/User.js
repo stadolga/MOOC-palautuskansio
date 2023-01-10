@@ -1,10 +1,9 @@
-import { useParams } from "react-router-dom";
-import { ListGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useParams, Link } from 'react-router-dom';
+import { ListGroup } from 'react-bootstrap';
 
-const User = ({ user }) => {
+function User({ user }) {
   return (
-    <div className ="secondaryElems">
+    <div className="secondaryElems">
       {user ? (
         <div className="blog">
           <h1 className="center">{user.name}</h1>
@@ -13,7 +12,13 @@ const User = ({ user }) => {
               <h2>Added blogs</h2>
               <ListGroup className="blogsScrollable">
                 {user.blogs.map((blog) => (
-                  <ListGroup.Item class action as={Link} to={`/blogs/${blog.id}`} key = {blog.id}>{blog.title} by {blog.author}</ListGroup.Item>
+                  <ListGroup.Item class action as={Link} to={`/blogs/${blog.id}`} key={blog.id}>
+                    {blog.title}
+                    {' '}
+                    by
+                    {' '}
+                    {blog.author}
+                  </ListGroup.Item>
                 ))}
               </ListGroup>
             </div>
@@ -28,6 +33,6 @@ const User = ({ user }) => {
       )}
     </div>
   );
-};
+}
 
 export default User;

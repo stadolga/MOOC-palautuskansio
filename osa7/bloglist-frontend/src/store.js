@@ -1,17 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
-import notification from "./reducers/notificationReducer";
-import blogs from './reducers/blogReducer'
-import blogForm from "./reducers/blogFormReducer";
-import login from "./reducers/loginReducer";
-import users from "./reducers/userReducer"
+import { configureStore } from '@reduxjs/toolkit';
+import notification from './reducers/notificationReducer';
+import blogs from './reducers/blogReducer';
+import blogForm from './reducers/blogFormReducer';
+import login from './reducers/loginReducer';
+import users from './reducers/userReducer';
 
 const store = configureStore({
   reducer: {
     notifications: notification,
-    blogs: blogs,
-    blogForm: blogForm,
-    login: login,
-    users: users,
+    blogs,
+    blogForm,
+    login,
+    users,
   },
 });
 
