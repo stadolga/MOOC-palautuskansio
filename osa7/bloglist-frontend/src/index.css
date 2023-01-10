@@ -8,7 +8,9 @@
 .comments{
   border: 2px solid;
   color:lightgray;
-  object-fit: fill;
+  display: grid; /* Use grid layout instead of flexbox */
+  grid-template-columns: 1fr; /* Use a single full-width column */
+  grid-row-gap: 10px; /* Add some vertical spacing between rows */
 }
 
 .logout{

@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useDispatch, useSelector } from 'react-redux';
 import {Form, Button, FormGroup, FormControl, FormLabel,} from 'react-bootstrap';
 

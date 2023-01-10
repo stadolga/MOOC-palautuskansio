@@ -62,11 +62,11 @@ export const addCommentsThunk = (id, comment) => {
   };
 };
 
-export const updateBlogThunk = (userObject, id) => async (dispatch) => {
-  try {
-    const returnedObject = await blogService.put(userObject, id);
-    dispatch(updateBlog(returnedObject.data));
-  } catch (error) {
+  export const updateBlogThunk = (userObject, id) => async (dispatch) => {
+    try {
+      const returnedObject = await blogService.put(userObject, id);
+      dispatch(updateBlog(returnedObject.data));
+    } catch (error) {
   }
 };
 

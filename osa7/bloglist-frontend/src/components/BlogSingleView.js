@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -55,16 +56,14 @@ function Blog({ blog, currentUserUsername }) {
         <h3><a href={`https://${blog.url}`}>{blog.url}</a></h3>
         <br />
         <h5>
-          likes:
-          {blog.likes}
+          likes: {blog.likes}
         </h5>
         <Button type="submit" onClick={useLike}>
           like
         </Button>
         <br />
         <h5>
-          added by
-          {blog.user.name}
+          added by {blog.user.name}
         </h5>
         {blog.user.username === currentUserUsername ? (
           <Button onClick={() => removeBlog(blog)}>remove</Button>
