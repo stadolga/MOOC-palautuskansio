@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {newBlog} from '../reducers/blogReducer'
 import { setNotification } from "../reducers/notificationReducer";
 import {setNewAuthor, setNewTitle, setNewUrl} from "../reducers/blogFormReducer"
-import { Button } from "react-bootstrap";
+import {Form, Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 
 
 const BlogForm = () => {
@@ -33,10 +33,10 @@ const BlogForm = () => {
   };
 
   return (
-    <form data-testid="form" onSubmit={addBlogForm}>
-      <div>
-        title:
-        <input
+    <Form data-testid="form" onSubmit={addBlogForm}>
+      <FormGroup>
+        <FormLabel><h5><i class="fa fa-font"></i> Title</h5></FormLabel>
+        <FormControl
           type="text"
           name="title"
           value={newTitle}
@@ -44,10 +44,10 @@ const BlogForm = () => {
           data-testid="title-input"
           id="title"
         />
-      </div>
-      <div>
-        author:
-        <input
+      </FormGroup>
+      <FormGroup>
+      <FormLabel><h5><i class="fa fa-pencil"></i> Author</h5></FormLabel>
+        <FormControl
           type="text"
           value={newAuthor}
           name="author"
@@ -55,10 +55,10 @@ const BlogForm = () => {
           data-testid="author-input"
           id="author"
         />
-      </div>
-      <div>
-        url:
-        <input
+      </FormGroup>
+      <FormGroup>
+      <FormLabel><h5><i class="fa fa-globe"></i> URL</h5></FormLabel>
+        <FormControl
           type="text"
           value={newUrl}
           name="Username"
@@ -66,11 +66,11 @@ const BlogForm = () => {
           data-testid="url-input"
           id="url"
         />
-      </div>
+      </FormGroup>
       <Button type="submit" id="submit-blog">
         create
       </Button>
-    </form>
+    </Form>
   );
 };
 

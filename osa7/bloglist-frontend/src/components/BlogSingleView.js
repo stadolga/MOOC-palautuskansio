@@ -61,7 +61,9 @@ const Blog = ({ blog,currentUserUsername}) => {
                 <Button onClick={() => removeBlog(blog)}>remove</Button>
                 ) : null}
             </div>
-            <h2>submit comment:</h2>
+            <br/>
+            
+            <h5>submit comment:</h5>
             <form onSubmit={handleSubmit}>
                 <input name="comment" type="text" value={comment} onChange={handleChange}></input>
                 <Button type="submit">submit!</Button>

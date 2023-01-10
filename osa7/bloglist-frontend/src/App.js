@@ -103,7 +103,7 @@ const App = () => {
     return (
       <div >
         <div>
-        <h1>Blogs</h1>
+        <h1 className="center">Blogs</h1>
         </div>
         <div>
           <Togglable>
