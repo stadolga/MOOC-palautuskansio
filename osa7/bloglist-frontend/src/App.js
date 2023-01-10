@@ -10,13 +10,15 @@ import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 import UserTable from "./components/UserInfo";
 import User from "./components/User";
+import BlogSingleView from "./components/BlogSingleView"
 
 import {initializeBlogs} from './reducers/blogReducer'
 import {setUser} from './reducers/loginReducer'
 import { initializeUsers } from "./reducers/userReducer";
 
+
 import {
-  Routes, Route, useMatch
+  Routes, Route, useMatch, Link
 } from "react-router-dom"
 
 import "./index.css";
@@ -29,7 +31,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
-  }, [blogs.length])
+  }, [blogs.length])  
 
   useEffect(() => {
     dispatch(initializeUsers())
@@ -53,16 +55,21 @@ const App = () => {
     window.location.reload();
   };
 
-  const match = useMatch('/users/:id')
-  const findUser = match 
-    ? userList.find(usr => usr.id === match.params.id)
+  const matchUser = useMatch('/users/:id')
+  const findUser = matchUser
+    ? userList.find(usr => usr.id === matchUser.params.id)
+    : null
+
+  const matchBlog = useMatch('/blogs/:id')
+  const findBlog = matchBlog
+    ? blogs.find(blog => blog.id === matchBlog.params.id)
     : null
 
   const BlogView = () => {
     return (
       <div>
+        <h1>Blogs</h1>
         <div>
-          <UserTable users={userList} />
           <Togglable buttonLabel="create a new blog">
             <BlogForm />
           </Togglable>
@@ -71,7 +78,6 @@ const App = () => {
               <Blog
                 key={blog.id}
                 blog={blog}
-                currentUserUsername={user.username}
               />
             ))}
           </ul>
@@ -82,21 +88,27 @@ const App = () => {
   
   return (
     <div>
-      <h1>blogs</h1>
+      {/* <h1>blog app</h1> */}
       <Notification />
   
       {user === '' ? (
         <LoginForm/>
       ) : (
         <div>
-          <p>{user.name} logged in</p>
+      <div>
+        <Link to="/">blogs</Link>
+        <Link to="/users">users</Link>
+        {user.name} logged in
           <button onClick={handleLogOut} type="submit">
             logout
           </button>
+      </div>
           <div>
             <Routes>
               <Route path="/" element={<BlogView />} />
               <Route path ="/users/:id" element={<User user={findUser}/>}/>
+              <Route path = "/blogs/:id" element={<BlogSingleView blog={findBlog} currentUserUsername={user.username}/>}/>
+              <Route path = "/users" element= {<UserTable users={userList} />}/>
             </Routes>
           </div>
         </div>

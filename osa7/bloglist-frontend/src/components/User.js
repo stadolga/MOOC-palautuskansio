@@ -10,7 +10,7 @@ const User = ({ user }) => {
           {user.blogs.length ? (
             <ul>
               {user.blogs.map((blog) => (
-                <li>{blog.title}</li>
+                <li key = {blog.id}>{blog.title}</li>
               ))}
             </ul>
           ) : (

@@ -21,16 +21,22 @@ const blogSlice = createSlice({
           const noteToChange = state.find(n => n.id === id)
           const changedNote = { 
             ...noteToChange, 
-        likes: noteToChange.likes+1 
-      }
-      return state.map(note =>
-        note.id !== id ? note : changedNote 
-      ).sort((a, b) => b.likes - a.likes)
-        }
+            likes: noteToChange.likes+1 
+          }
+        return state.map(note =>
+          note.id !== id ? note : changedNote 
+        ).sort((a, b) => b.likes - a.likes)
+        },
+        addComment: (state, action) => {
+          const comm = action.payload.retObj
+          const id = action.payload.id
+          const blog = state.find(n => id === n.id)
+          blog.comment.push(comm)
+        },
     }
 })
 
-export const {addBlog,setBlogs, removeBlog, updateBlog} = blogSlice.actions
+export const {addBlog,setBlogs, removeBlog, updateBlog, addComment} = blogSlice.actions
 
 export const initializeBlogs = () => {
     return async dispatch => {
@@ -53,11 +59,21 @@ export const removeBlogThunk = (id) => {
     };
   };
 
+export const addCommentsThunk = (id, comment) => {
+  const commentObject = {
+    comment: comment,
+    id: id
+  }
+    return async (dispatch) => {
+      const retObj = await blogService.addComments(id,commentObject);
+      dispatch(addComment({retObj: retObj.data, id}))
+    };
+  };
+
   export const updateBlogThunk = (userObject, id) => {
     return async (dispatch) => {
       try {
         const returnedObject = await blogService.put(userObject, id);
-        console.log(returnedObject.data)
         dispatch(updateBlog(returnedObject.data))
       } catch (error) {
         console.error(error);

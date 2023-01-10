@@ -11,7 +11,7 @@ const store = configureStore({
     blogs: blogs,
     blogForm: blogForm,
     login: login,
-    users: users
+    users: users,
   },
 });
 
